@@ -70,9 +70,8 @@ void Solver::print_logo() const {
 
 // Create Reader by a given string
 Reader* Solver::create_reader() {
-  Reader* reader;
   std::string str = hyper_param_.on_disk ? "disk" : "memory";
-  reader = CREATE_READER(str.c_str());
+  Reader* reader = CREATE_READER(str.c_str());
   if (reader == nullptr) {
     LOG(FATAL) << "Cannot create reader: " << str;
   }
@@ -81,8 +80,7 @@ Reader* Solver::create_reader() {
 
 // Create Score by a given string
 Score* Solver::create_score() {
-  Score* score;
-  score = CREATE_SCORE(hyper_param_.score_func.c_str());
+  Score* score = CREATE_SCORE(hyper_param_.score_func.c_str());
   if (score == nullptr) {
     LOG(FATAL) << "Cannot create score: "
                << hyper_param_.score_func;
@@ -92,8 +90,7 @@ Score* Solver::create_score() {
 
 // Create Loss by a given string
 Loss* Solver::create_loss() {
-  Loss* loss;
-  loss = CREATE_LOSS(hyper_param_.loss_func.c_str());
+  Loss* loss = CREATE_LOSS(hyper_param_.loss_func.c_str());
   if (loss == nullptr) {
     LOG(FATAL) << "Cannot create loss: "
                << hyper_param_.loss_func;
@@ -103,8 +100,7 @@ Loss* Solver::create_loss() {
 
 // Create Metric by a given string
 Metric* Solver::create_metric() {
-  Metric* metric;
-  metric = CREATE_METRIC(hyper_param_.metric.c_str());
+  Metric* metric = CREATE_METRIC(hyper_param_.metric.c_str());
   // Note that here we do not cheack metric == nullptr
   // this is because we can set metric to "none", which 
   // means that we don't print any metric info.
@@ -135,12 +131,12 @@ void Solver::Initialize(int argc, char* argv[]) {
 // Initialize the xLearn environment through the
 // given hyper-parameters. This function will be 
 // used for python API.
-void Solver::Initialize(HyperParam& hyper_param) {
+void Solver::Initialize(const HyperParam& hyper_param) {
   // Print logo
   print_logo();
   // Check the arguments
   checker(hyper_param);
-  this->hyper_param_ = hyper_param;
+  hyper_param_ = hyper_param;
   // Initialize log file
   init_log();
   // Init train or predict
@@ -191,7 +187,7 @@ void Solver::init_train() {
   /*********************************************************
    *  Initialize thread pool                               *
    *********************************************************/
-  size_t threadNumber = std::thread::hardware_concurrency();;
+  size_t threadNumber = std::thread::hardware_concurrency();
   if (hyper_param_.thread_number != 0) {
     threadNumber = hyper_param_.thread_number;
   }
@@ -556,9 +552,9 @@ void Solver::Clear() {
   LOG(INFO) << "Clear the xLearn environment ...";
   print_action("Clear the xLearn environment ...");
   // Clear model
-  delete this->model_;
+  delete model_;
   // Clear Reader
-  for (size_t i = 0; i < this->reader_.size(); ++i) {
+  for (size_t i = 0; i < reader_.size(); ++i) {
     if (reader_[i] != nullptr) {
       delete reader_[i];
     }
