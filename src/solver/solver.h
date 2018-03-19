@@ -67,7 +67,7 @@ class Solver {
   void SetPredict() { hyper_param_.is_train = false; }
 
   // Initialize the xLearn environment, including checking
-  // and parsing the commad line arguments, reading problem
+  // and parsing the command line arguments, reading problem
   // (training data or testing data), initialize model, loss, 
   // metric, and score functions, etc.
   void Initialize(int argc, char* argv[]);
@@ -75,7 +75,7 @@ class Solver {
   // Initialize the xLearn environment through the
   // given hyper-parameters. This function will be 
   // used for python API.
-  void Initialize(HyperParam& hyper_param);
+  void Initialize(const HyperParam& hyper_param);
 
   // Start a training task or start an inference task.
   void StartWork();
@@ -117,7 +117,7 @@ class Solver {
   void init_predict();
   void init_log();
   void checker(int argc, char* argv[]);
-  void checker(HyperParam& hyper_param);
+  void checker(const HyperParam& hyper_param);
 
   // Start function
   void start_train_work();
